@@ -1,6 +1,6 @@
 import React, { useEffect, useState  } from 'react'
 import BookCard from '../components/BookCard'
-import { Input, FormBtn } from "react-bootstrap"
+import { Input, FormBtn, Button } from "react-bootstrap"
 const axios = require('axios')
 
 function Search() {
@@ -51,18 +51,18 @@ function Search() {
         <div className='container'>
             <div className='row mt-3 mb-3'>
 
-                <Input
+                <input
                     onChange={handleInputChange}
                     name="search"
                     placeholder="Seach Term"
                     value={formObject.search}
                 />
-                <FormBtn
+                <Button
                     disabled={!(formObject.search)}
                     onClick={handleFormSubmit}
                 >
                     Search Book Title in Google
-                </FormBtn>
+                </Button>
 
             </div>
             <h1>List of matching items</h1>
