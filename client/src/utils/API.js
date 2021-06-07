@@ -9,7 +9,7 @@ export default {
     return axios.get("/api/books");
   },
 
-  createBook: function (bookData) {
+  saveBook: function (bookData) {
     return axios.post("/api/books", bookData);
   },
 
