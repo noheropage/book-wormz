@@ -1,7 +1,11 @@
 import React, { useEffect, useState  } from 'react'
 import BookCard from '../components/BookCard'
+
 import { Input, FormBtn, Button } from "react-bootstrap"
+
+
 const axios = require('axios')
+
 
 function Search() {
 
@@ -20,6 +24,7 @@ function Search() {
         try {
             const googleData = await axios.get(baseUrl)
               setBooks(googleData.data.items)
+              console.log(googleData.data.items.volumeInfo.authors);
             
         } catch (error) {
             console.error(error)
@@ -28,10 +33,18 @@ function Search() {
 
     let bookstoLoad;
     if (books) {
-        bookstoLoad = books.map(book => {
-        return <BookCard data={book}/>
+        console.log(books);
+        bookstoLoad = books.map((book, index) => {
+        return <BookCard key={index} 
+            author={book.volumeInfo.authors} 
+            title={book.volumeInfo.title} 
+            description={book.volumeInfo.description} 
+            img={book.volumeInfo.imageLinks.thumbnail} 
+            link={book.volumeInfo.previewLink}
+            />
         });
     } else {
+        console.log(books);
         bookstoLoad = "Rendering books";
     }
 
@@ -48,6 +61,8 @@ function Search() {
 
 
     return (
+        <div>
+            
         <div className='container'>
             <div className='row mt-3 mb-3'>
 
@@ -67,6 +82,7 @@ function Search() {
             </div>
             <h1>List of matching items</h1>
             {bookstoLoad}
+        </div>
         </div>
     )
 }

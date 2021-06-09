@@ -1,60 +1,56 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import API from '../utils/API'
-const axios = require('axios')
+import { Card } from 'react-bootstrap'
 
-class BookCard extends Component {
+function BookCard(props) {
 
-    state = {
-        data: []
-    }
+    const [book, setBook] = useState(props)
 
-    constructor(props) {
-        super(props)
-        this.state = {props}
-    }
+    useEffect(() => {
+        setBook(props)
+        console.log(props);
+    }, [props])
 
-
-    keepBook() {
-
-        var data = {
-            title: this.state.props.data.volumeInfo.title,
-            author: this.state.props.data.volumeInfo.authors,
-            description: this.state.props.data.volumeInfo.description,
-            img: this.state.props.data.volumeInfo.imageLinks.thumbnail,
-            link: this.state.props.data.volumeInfo.previewLink,
-        }
-
-        API.saveBook(data)
+    const handleClick = ()  => {
+        API.saveBook({
+            title: props.title,
+            img: props.img,
+            link: props.link,
+            author: props.author,
+            description: props.description
+        })
             .catch(err => console.log(err));
 
         return
     }
 
-    render() {
+    
+        
         return (
             <div className='row'>
-                <div className='card'>
-                    <div className='card-header'>{this.props.data.volumeInfo.title}</div>
+                <Card>
+                <Card.img variant='top' src={book.img} />
+                    <Card.Title>{book.title}</Card.Title>
                     <div className='row g-0'>
                         <div className='col-md-3'>
                             <div className='row'>
-                                <img className='image' src={this.props.data.volumeInfo.imageLinks.thumbnail}></img>
+                                
                             </div>
-                            <a href={this.props.data.volumeInfo.previewLink} className="btn btn-primary m-1" target='_blank'>Look at this book in Google</a>
-                            <button className='btn btn-primary' onClick={()=>this.keepBook()}>Save this book to list</button>
+                            <a href={book.link} className="btn btn-primary m-1" target='_blank'>Look at this book in Google</a>
+                            <button className='btn btn-primary' onClick={handleClick}>Save this book to list</button>
                         </div>
                         <div className='col-md-9'>
                             <div className='card-body'>
-                                <h5 className='card-title'>Author: {this.props.data.volumeInfo.authors}</h5>
-                                <div className='card-text'>{this.props.data.volumeInfo.description}</div>
+                                <h5 className='card-title'>Author(s): {book.author}</h5>
+                                <Card.Text>{book.description}</Card.Text>
                             </div>
                         </div>
                     </div>
-                </div>
+                </Card>
             </div>
             
         )
-    }
+    
 }
 
 export default BookCard;
